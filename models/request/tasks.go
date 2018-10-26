@@ -10,3 +10,8 @@ type TasksCreate struct {
 	Encouragement int       `json:"encouragement" validate:"required,min=1,max=3"`
 	Pay           float64   `json:"pay" validate:"omitempty"`
 }
+
+type TasksGet struct {
+	Token string `json:"token" validate:"required,uuid"`
+	Id    string `json:"id" validate:"required,uuid"`
+}

@@ -24,6 +24,7 @@ func NewAPIHandler(config config.HandlerConfig, controller usecases.Controller) 
 	mux := http.NewServeMux()
 	mux.HandleFunc("/users.get", api.UsersGet)
 	mux.HandleFunc("/tasks.create", api.TasksCreate)
+	mux.HandleFunc("/tasks.get", api.TasksGet)
 	return mux
 }
 

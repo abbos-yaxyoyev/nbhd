@@ -1,6 +1,7 @@
 package postgres
 
 import (
+	"database/sql"
 	"github.com/lib/pq"
 	"nbhd/models"
 	"nbhd/tools/logger"
@@ -19,4 +20,20 @@ func (db Database) CreateTask(task models.Task) error {
 
 	return nil
 
+}
+
+func (db Database) GetTask(id string) (models.Task, error) {
+
+	var task models.Task
+
+	query := "SELECT id, title, category, location, description, time, creator, performer, encouragement, pay, created, archived FROM tasks WHERE id = $1"
+
+	err := db.db.QueryRow(query, id).Scan(&task.Id, &task.Title, &task.Category, pq.Array(&task.Location), &task.Description, &task.Time, &task.Creator, &task.Performer, &task.Encouragement, &task.Pay, &task.Created, &task.Archived)
+
+	if err != nil && err != sql.ErrNoRows {
+		logger.Warning(err.Error())
+		return task, err
+	}
+
+	return task, nil
 }

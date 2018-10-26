@@ -26,3 +26,25 @@ func (api API) TasksCreate(w http.ResponseWriter, r *http.Request) {
 	ReturnSuccessResponse(w, res)
 
 }
+
+func (api API) TasksGet(w http.ResponseWriter, r *http.Request) {
+
+	var req request.TasksGet
+
+	err := ProcessRequest(r, &req, api.checkHash, api.hashSalt)
+
+	if err != nil {
+		ReturnErrorResponse(w, err.Error())
+		return
+	}
+
+	res, err := api.controller.TasksGet(req)
+
+	if err != nil {
+		ReturnErrorResponse(w, err.Error())
+		return
+	}
+
+	ReturnSuccessResponse(w, res)
+
+}
