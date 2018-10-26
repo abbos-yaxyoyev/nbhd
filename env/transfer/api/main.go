@@ -1,8 +1,6 @@
 package api
 
 import (
-	"nbhd/env/config"
-	"nbhd/usecases"
 	"encoding/hex"
 	"encoding/json"
 	"errors"
@@ -10,6 +8,9 @@ import (
 	"net/http"
 
 	"golang.org/x/crypto/sha3"
+
+	"nbhd/env/config"
+	"nbhd/usecases"
 )
 
 type API struct {
@@ -22,6 +23,7 @@ func NewAPIHandler(config config.HandlerConfig, controller usecases.Controller) 
 	api := API{controller, config.CheckHash, config.HashSalt}
 	mux := http.NewServeMux()
 	mux.HandleFunc("/users.get", api.UsersGet)
+	mux.HandleFunc("/tasks.create", api.TasksCreate)
 	return mux
 }
 
