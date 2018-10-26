@@ -1,6 +1,7 @@
 package response
 
 type UsersGet struct {
-	Id   int    `json:"id"`
-	Name string `json:"name"`
+	Id    string `json:"id"`
+	Name  string `json:"name"`
+	Photo string `json:"photo"`
 }

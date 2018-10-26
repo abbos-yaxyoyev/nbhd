@@ -1,4 +1,12 @@
+CREATE TABLE sessions (
+  id UUID PRIMARY KEY,
+  user_id UUID NOT NULL
+);
+
 CREATE TABLE users (
-  user_id SERIAL PRIMARY KEY,
-  name VARCHAR(75) NOT NULL
+  id   UUID PRIMARY KEY,
+  name VARCHAR(150) NOT NULL,
+  photo VARCHAR(250) NOT NULL,
+  phone VARCHAR(10) NOT NULL UNIQUE,
+  location VARCHAR(50) NOT NULL
 );

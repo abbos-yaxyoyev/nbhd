@@ -1,5 +1,6 @@
 package request
 
 type UsersGet struct {
-	Id int `json:"id" validate:"required,min=1"`
+	Token string `json:"token" validate:"required,uuid"`
+	Id    string `json:"id" validate:"required,uuid"`
 }

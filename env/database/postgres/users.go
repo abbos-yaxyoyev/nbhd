@@ -1,21 +1,22 @@
 package postgres
 
 import (
+	"database/sql"
+	"github.com/lib/pq"
 	"nbhd/models"
 	"nbhd/tools/logger"
-	"database/sql"
 )
 
-func (db Database) GetUserById(id int) (models.User, error) {
+func (db Database) GetUser(id string) (models.User, error) {
 
 	var user models.User
 
-	query := "SELECT user_id, name FROM users WHERE user_id = $1"
+	query := "SELECT id, name, phone, photo, location FROM users WHERE id = $1"
 
-	err := db.db.QueryRow(query, id).Scan(&user.Id, &user.Name)
+	err := db.db.QueryRow(query, id).Scan(&user.Id, &user.Name, &user.Phone, &user.Photo, pq.Array(&user.Location))
 
 	if err != nil && err != sql.ErrNoRows {
-		logger.Error(err.Error())
+		logger.Warning(err.Error())
 		return user, err
 	}
 
