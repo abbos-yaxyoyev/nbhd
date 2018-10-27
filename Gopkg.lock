@@ -23,6 +23,12 @@
   version = "v2.2.1"
 
 [[projects]]
+  name = "github.com/google/uuid"
+  packages = ["."]
+  revision = "d460ce9f8df2e77fb1ba55ca87fafed96c607494"
+  version = "v1.0.0"
+
+[[projects]]
   name = "github.com/lib/pq"
   packages = [
     ".",
@@ -34,7 +40,11 @@
 [[projects]]
   branch = "master"
   name = "golang.org/x/crypto"
-  packages = ["sha3"]
+  packages = [
+    "bcrypt",
+    "blowfish",
+    "sha3"
+  ]
   revision = "e84da0312774c21d64ee2317962ef669b27ffb41"
 
 [[projects]]
@@ -46,6 +56,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "e53fad586de6a111fd727d2263cd2c71ccfe21fe242ddb9a6bebfcd707917330"
+  inputs-digest = "e657f3321bcc1d59c92bf89e2569c64e36b12203b86036d707e112f011598c83"
   solver-name = "gps-cdcl"
   solver-version = 1
