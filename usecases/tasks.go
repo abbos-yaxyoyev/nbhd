@@ -256,14 +256,17 @@ func (controller Controller) TasksList(req request.TasksList) (response.TasksLis
 
 		taskCreator, err := controller.db.GetUser(task.Creator)
 
+		taskCreatorRating, err := controller.db.GetUserRating(taskCreator.Id)
+
 		if err != nil {
 			return res, errors.New("internal error")
 		}
 
 		resTask.Creator = response.TasksListCreator{
-			Id:    taskCreator.Id,
-			Name:  taskCreator.Name,
-			Photo: taskCreator.Photo,
+			Id:     taskCreator.Id,
+			Name:   taskCreator.Name,
+			Photo:  taskCreator.Photo,
+			Rating: taskCreatorRating,
 		}
 
 		resTasks = append(resTasks, resTask)

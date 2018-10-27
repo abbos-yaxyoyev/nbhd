@@ -47,9 +47,10 @@ type TasksListTask struct {
 }
 
 type TasksListCreator struct {
-	Id    string `json:"id"`
-	Name  string `json:"name"`
-	Photo string `json:"photo"`
+	Id     string  `json:"id"`
+	Name   string  `json:"name"`
+	Photo  string  `json:"photo"`
+	Rating float64 `json:"rating"`
 }
 
 type TasksDelete struct{}
