@@ -102,6 +102,34 @@ func (controller Controller) UsersSignIn(req request.UsersSignIn) (response.User
 
 }
 
+func (controller Controller) UsersSignOut(req request.UsersSignOut) (response.UsersSignOut, error) {
+
+	var res response.UsersSignOut
+
+	if err := controller.validator.Process(req); err != nil {
+		return res, errors.New("invalid params")
+	}
+
+	session, err := controller.db.GetSession(req.Token)
+
+	if err != nil {
+		return res, errors.New("internal error")
+	}
+
+	if session.Id == "" {
+		return res, errors.New("invalid session id")
+	}
+
+	err = controller.db.DeleteSession(session)
+
+	if err != nil {
+		return res, errors.New("internal error")
+	}
+
+	return res, nil
+
+}
+
 func (controller Controller) UsersGet(req request.UsersGet) (response.UsersGet, error) {
 
 	var res response.UsersGet

@@ -11,6 +11,10 @@ type UsersSignIn struct {
 	Password string `json:"password" validate:"required,password"`
 }
 
+type UsersSignOut struct {
+	Token string `json:"token" validate:"required,uuid"`
+}
+
 type UsersGet struct {
 	Token string `json:"token" validate:"required,uuid"`
 	Id    string `json:"id" validate:"required,uuid"`

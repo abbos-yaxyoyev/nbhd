@@ -36,3 +36,18 @@ func (db Database) StoreSession(session models.Session) error {
 	return nil
 
 }
+
+func (db Database) DeleteSession(session models.Session) error {
+
+	query := "DELETE FROM sessions WHERE id = $1"
+
+	_, err := db.db.Exec(query, session.Id)
+
+	if err != nil {
+		logger.Warning(err.Error())
+		return err
+	}
+
+	return nil
+
+}

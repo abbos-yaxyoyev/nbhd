@@ -10,6 +10,8 @@ type UsersSignIn struct {
 	Id    string `json:"id"`
 }
 
+type UsersSignOut struct{}
+
 type UsersGet struct {
 	Id    string `json:"id"`
 	Name  string `json:"name"`

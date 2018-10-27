@@ -49,6 +49,28 @@ func (api API) UsersSignIn(w http.ResponseWriter, r *http.Request) {
 
 }
 
+func (api API) UsersSignOut(w http.ResponseWriter, r *http.Request) {
+
+	var req request.UsersSignOut
+
+	err := ProcessRequest(r, &req, api.checkHash, api.hashSalt)
+
+	if err != nil {
+		ReturnErrorResponse(w, err.Error())
+		return
+	}
+
+	res, err := api.controller.UsersSignOut(req)
+
+	if err != nil {
+		ReturnErrorResponse(w, err.Error())
+		return
+	}
+
+	ReturnSuccessResponse(w, res)
+
+}
+
 func (api API) UsersGet(w http.ResponseWriter, r *http.Request) {
 
 	var req request.UsersGet
