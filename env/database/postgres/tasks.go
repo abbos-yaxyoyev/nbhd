@@ -37,3 +37,28 @@ func (db Database) GetTask(id string) (models.Task, error) {
 
 	return task, nil
 }
+
+func (db Database) ListTasks([4]float64) ([]models.Task, error) {
+
+	tasks := make([]models.Task, 0)
+
+	query := "SELECT id, title, category, location, description, time, creator, performer, encouragement, pay, created, archived FROM tasks WHERE archived = FALSE ORDER BY created DESC"
+
+	rows, err := db.db.Query(query)
+
+	if err != nil && err != sql.ErrNoRows {
+		logger.Warning(err.Error())
+		return tasks, err
+	}
+
+	defer rows.Close()
+
+	for rows.Next() {
+		var task models.Task
+		rows.Scan(&task.Id, &task.Title, &task.Category, pq.Array(&task.Location), &task.Description, &task.Time, &task.Creator, &task.Performer, &task.Encouragement, &task.Pay, &task.Created, &task.Archived)
+		tasks = append(tasks, task)
+	}
+
+	return tasks, nil
+
+}

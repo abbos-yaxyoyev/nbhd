@@ -15,3 +15,7 @@ type TasksGet struct {
 	Token string `json:"token" validate:"required,uuid"`
 	Id    string `json:"id" validate:"required,uuid"`
 }
+
+type TasksList struct {
+	Token string `json:"token" validate:"required,uuid"`
+}

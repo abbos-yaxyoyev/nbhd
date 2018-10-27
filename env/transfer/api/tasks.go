@@ -48,3 +48,25 @@ func (api API) TasksGet(w http.ResponseWriter, r *http.Request) {
 	ReturnSuccessResponse(w, res)
 
 }
+
+func (api API) TasksList(w http.ResponseWriter, r *http.Request) {
+
+	var req request.TasksList
+
+	err := ProcessRequest(r, &req, api.checkHash, api.hashSalt)
+
+	if err != nil {
+		ReturnErrorResponse(w, err.Error())
+		return
+	}
+
+	res, err := api.controller.TasksList(req)
+
+	if err != nil {
+		ReturnErrorResponse(w, err.Error())
+		return
+	}
+
+	ReturnSuccessResponse(w, res)
+
+}
