@@ -7,7 +7,7 @@ import (
 	"nbhd/tools/logger"
 )
 
-func (db Database) CreateTask(task models.Task) error {
+func (db Database) StoreTask(task models.Task) error {
 
 	query := "INSERT INTO tasks(id, title, category, location, description, time, creator, performer, encouragement, pay, created, archived) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)"
 

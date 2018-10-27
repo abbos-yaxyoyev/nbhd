@@ -52,7 +52,7 @@ func (controller Controller) TasksCreate(req request.TasksCreate) (response.Task
 		Created:       datetime.Generate(),
 	}
 
-	err = controller.db.CreateTask(task)
+	err = controller.db.StoreTask(task)
 
 	if err != nil {
 		return res, errors.New("internal error")
