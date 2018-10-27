@@ -13,15 +13,15 @@ CREATE TABLE users (
 
 CREATE TABLE tasks (
   id            UUID PRIMARY KEY,
-  title         VARCHAR(75)     NOT NULL,
-  category      SMALLINT        NOT NULL,
-  location      FLOAT ARRAY [2] NOT NULL,
-  description   VARCHAR(280)    NOT NULL,
-  time          INT             NOT NULL,
-  creator       UUID            NOT NULL,
-  performer     UUID            NOT NULL,
-  encouragement SMALLINT        NOT NULL,
-  pay           FLOAT           NOT NULL,
-  created       TIMESTAMP       NOT NULL,
-  archived      BOOLEAN         NOT NULL
+  title         VARCHAR(75)       NOT NULL,
+  category      SMALLINT          NOT NULL,
+  location      DECIMAL ARRAY [2] NOT NULL,
+  description   VARCHAR(280)      NOT NULL,
+  time          INT               NOT NULL,
+  creator       UUID              NOT NULL,
+  performer     UUID              NOT NULL,
+  encouragement SMALLINT          NOT NULL,
+  pay           DECIMAL           NOT NULL,
+  created       TIMESTAMP         NOT NULL,
+  archived      BOOLEAN           NOT NULL
 );
