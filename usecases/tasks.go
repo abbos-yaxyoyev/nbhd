@@ -238,3 +238,53 @@ func (controller Controller) TasksList(req request.TasksList) (response.TasksLis
 	return res, nil
 
 }
+
+func (controller Controller) TasksDelete(req request.TasksDelete) (response.TasksDelete, error) {
+
+	var res response.TasksDelete
+
+	if err := controller.validator.Process(req); err != nil {
+		return res, errors.New("invalid params")
+	}
+
+	session, err := controller.db.GetSession(req.Token)
+
+	if err != nil {
+		return res, errors.New("internal error")
+	}
+
+	if session.Id == "" {
+		return res, errors.New("invalid session id")
+	}
+
+	user, err := controller.db.GetUser(session.User)
+
+	if err != nil {
+		return res, errors.New("internal error")
+	}
+
+	task, err := controller.db.GetTask(req.Id)
+
+	if err != nil {
+		return res, errors.New("internal error")
+	}
+
+	if task.Id == "" {
+		return res, errors.New("invalid task id")
+	}
+
+	if task.Creator != user.Id {
+		return res, errors.New("invalid action")
+	}
+
+	task.Archived = true
+
+	err = controller.db.UpdateTask(task)
+
+	if err != nil {
+		return res, errors.New("internal error")
+	}
+
+	return res, nil
+
+}

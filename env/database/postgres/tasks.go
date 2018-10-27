@@ -22,6 +22,21 @@ func (db Database) CreateTask(task models.Task) error {
 
 }
 
+func (db Database) UpdateTask(task models.Task) error {
+
+	query := "UPDATE tasks SET title = $2, category = $3, location = $4, description = $5, time = $6, creator = $7, performer = $8, encouragement = $9, pay = $10, created = $11, archived = $12 WHERE id = $1"
+
+	_, err := db.db.Exec(query, task.Id, task.Title, task.Category, pq.Array(task.Location), task.Description, task.Time, task.Creator, task.Performer, task.Encouragement, task.Pay, task.Created, task.Archived)
+
+	if err != nil {
+		logger.Warning(err.Error())
+		return err
+	}
+
+	return nil
+
+}
+
 func (db Database) GetTask(id string) (models.Task, error) {
 
 	var task models.Task

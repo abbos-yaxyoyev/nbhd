@@ -43,3 +43,5 @@ type TasksListCreator struct {
 	Name  string `json:"name"`
 	Photo string `json:"photo"`
 }
+
+type TasksDelete struct{}
