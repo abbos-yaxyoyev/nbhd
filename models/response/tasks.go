@@ -5,17 +5,24 @@ type TasksCreate struct {
 }
 
 type TasksGet struct {
-	Id            string          `json:"id"`
-	Title         string          `json:"title"`
-	Category      int             `json:"category"`
-	Location      []float64       `json:"location"`
-	Distance      int             `json:"distance"`
-	Description   string          `json:"description"`
-	Time          int             `json:"time"`
-	Creator       TasksGetCreator `json:"creator"`
-	Encouragement int             `json:"encouragement"`
-	Pay           float64         `json:"pay"`
-	Created       string          `json:"created"`
+	Id            string              `json:"id"`
+	Title         string              `json:"title"`
+	Category      int                 `json:"category"`
+	Location      []float64           `json:"location"`
+	Distance      int                 `json:"distance"`
+	Description   string              `json:"description"`
+	Time          int                 `json:"time"`
+	Creator       TasksGetCreator     `json:"creator"`
+	Encouragement int                 `json:"encouragement"`
+	Pay           float64             `json:"pay"`
+	Created       string              `json:"created"`
+	Performers    []TasksGetPerformer `json:"performers"`
+}
+
+type TasksGetPerformer struct {
+	Id    string `json:"id"`
+	Name  string `json:"name"`
+	Photo string `json:"photo"`
 }
 
 type TasksGetCreator struct {

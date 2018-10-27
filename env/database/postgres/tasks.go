@@ -123,3 +123,28 @@ func (db Database) DeleteTaskPerformer(performer models.TaskPerformer) error {
 	return nil
 
 }
+
+func (db Database) ListTaskPerformers(id string) ([]models.TaskPerformer, error) {
+
+	performers := make([]models.TaskPerformer, 0)
+
+	query := "SELECT task_id, user_id FROM task_performers WHERE task_id = $1"
+
+	rows, err := db.db.Query(query, id)
+
+	if err != nil && err != sql.ErrNoRows {
+		logger.Warning(err.Error())
+		return performers, err
+	}
+
+	defer rows.Close()
+
+	for rows.Next() {
+		var performer models.TaskPerformer
+		rows.Scan(&performer.Task, &performer.User)
+		performers = append(performers, performer)
+	}
+
+	return performers, nil
+
+}

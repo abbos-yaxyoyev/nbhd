@@ -143,6 +143,38 @@ func (controller Controller) TasksGet(req request.TasksGet) (response.TasksGet, 
 		res.Creator.Phone = user.Phone
 	}
 
+	if task.Creator == user.Id {
+
+		performers, err := controller.db.ListTaskPerformers(task.Id)
+
+		if err != nil {
+			return res, errors.New("internal error")
+		}
+
+		resPerformers := make([]response.TasksGetPerformer, 0, len(performers))
+
+		for _, performer := range performers {
+
+			person, err := controller.db.GetUser(performer.User)
+
+			if err != nil {
+				return res, errors.New("internal error")
+			}
+
+			resPerformer := response.TasksGetPerformer{
+				Id:    person.Id,
+				Name:  person.Name,
+				Photo: person.Photo,
+			}
+
+			resPerformers = append(resPerformers, resPerformer)
+
+		}
+
+		res.Performers = resPerformers
+
+	}
+
 	return res, nil
 
 }

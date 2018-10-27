@@ -10,4 +10,5 @@ type taskStorage interface {
 	GetTaskPerformer(string, string) (models.TaskPerformer, error)
 	StoreTaskPerformer(models.TaskPerformer) error
 	DeleteTaskPerformer(models.TaskPerformer) error
+	ListTaskPerformers(string) ([]models.TaskPerformer, error)
 }
