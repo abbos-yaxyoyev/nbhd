@@ -194,10 +194,17 @@ func (controller Controller) UsersGet(req request.UsersGet) (response.UsersGet, 
 		return res, errors.New("invalid user id")
 	}
 
+	personRating, err := controller.db.GetUserRating(person.Id)
+
+	if err != nil {
+		return res, errors.New("internal error")
+	}
+
 	res = response.UsersGet{
-		Id:    person.Id,
-		Name:  person.Name,
-		Photo: person.Photo,
+		Id:     person.Id,
+		Name:   person.Name,
+		Photo:  person.Photo,
+		Rating: personRating,
 	}
 
 	return res, nil
