@@ -7,6 +7,7 @@ type taskStorage interface {
 	UpdateTask(models.Task) error
 	GetTask(string) (models.Task, error)
 	ListTasks([4]float64) ([]models.Task, error)
-	IsTaskPerformer(string, string) (bool, error)
+	GetTaskPerformer(string, string) (models.TaskPerformer, error)
 	StoreTaskPerformer(models.TaskPerformer) error
+	DeleteTaskPerformer(models.TaskPerformer) error
 }

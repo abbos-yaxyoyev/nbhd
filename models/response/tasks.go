@@ -47,3 +47,5 @@ type TasksListCreator struct {
 type TasksDelete struct{}
 
 type TasksPerformanceRequest struct{}
+
+type TasksPerformanceCancel struct{}

@@ -78,25 +78,40 @@ func (db Database) ListTasks([4]float64) ([]models.Task, error) {
 
 }
 
-func (db Database) IsTaskPerformer(task, user string) (bool, error) {
+func (db Database) GetTaskPerformer(task, user string) (models.TaskPerformer, error) {
 
-	var toggle int8
+	var performer models.TaskPerformer
 
-	query := "SELECT COUNT(task_id) FROM task_performers WHERE task_id = $1 AND user_id = $2"
+	query := "SELECT task_id, user_id FROM task_performers WHERE task_id = $1 AND user_id = $2"
 
-	err := db.db.QueryRow(query, task, user).Scan(&toggle)
+	err := db.db.QueryRow(query, task, user).Scan(&performer.Task, &performer.User)
 
 	if err != nil && err != sql.ErrNoRows {
 		logger.Warning(err.Error())
-		return false, err
+		return performer, err
 	}
 
-	return toggle == 1, nil
+	return performer, nil
 }
 
 func (db Database) StoreTaskPerformer(performer models.TaskPerformer) error {
 
 	query := "INSERT INTO task_performers (task_id, user_id) VALUES ($1, $2)"
+
+	_, err := db.db.Exec(query, performer.Task, performer.User)
+
+	if err != nil {
+		logger.Warning(err.Error())
+		return err
+	}
+
+	return nil
+
+}
+
+func (db Database) DeleteTaskPerformer(performer models.TaskPerformer) error {
+
+	query := "DELETE FROM task_performers WHERE task_id = $1 AND user_id = $2"
 
 	_, err := db.db.Exec(query, performer.Task, performer.User)
 

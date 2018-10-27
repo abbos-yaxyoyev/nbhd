@@ -331,22 +331,76 @@ func (controller Controller) TasksPerformanceRequest(req request.TasksPerformanc
 		return res, errors.New("task is archived")
 	}
 
-	isPerformer, err := controller.db.IsTaskPerformer(task.Id, user.Id)
+	performer, err := controller.db.GetTaskPerformer(task.Id, user.Id)
 
 	if err != nil {
 		return res, errors.New("internal error")
 	}
 
-	if isPerformer {
+	if performer.User != "" {
 		return res, errors.New("request is already made")
 	}
 
-	performer := models.TaskPerformer{
+	performer = models.TaskPerformer{
 		Task: task.Id,
 		User: user.Id,
 	}
 
 	err = controller.db.StoreTaskPerformer(performer)
+
+	if err != nil {
+		return res, errors.New("internal error")
+	}
+
+	return res, nil
+
+}
+
+func (controller Controller) TasksPerformanceCancel(req request.TasksPerformanceCancel) (response.TasksPerformanceCancel, error) {
+
+	var res response.TasksPerformanceCancel
+
+	if err := controller.validator.Process(req); err != nil {
+		return res, errors.New("invalid params")
+	}
+
+	session, err := controller.db.GetSession(req.Token)
+
+	if err != nil {
+		return res, errors.New("internal error")
+	}
+
+	if session.Id == "" {
+		return res, errors.New("invalid session id")
+	}
+
+	user, err := controller.db.GetUser(session.User)
+
+	if err != nil {
+		return res, errors.New("internal error")
+	}
+
+	task, err := controller.db.GetTask(req.Id)
+
+	if err != nil {
+		return res, errors.New("internal error")
+	}
+
+	if task.Id == "" {
+		return res, errors.New("invalid task id")
+	}
+
+	performer, err := controller.db.GetTaskPerformer(task.Id, user.Id)
+
+	if err != nil {
+		return res, errors.New("internal error")
+	}
+
+	if performer.User == "" {
+		return res, errors.New("no request made")
+	}
+
+	err = controller.db.DeleteTaskPerformer(performer)
 
 	if err != nil {
 		return res, errors.New("internal error")
