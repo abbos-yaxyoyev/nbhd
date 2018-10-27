@@ -27,6 +27,7 @@ func NewAPIHandler(config config.HandlerConfig, controller usecases.Controller) 
 	mux.HandleFunc("/tasks.get", api.TasksGet)
 	mux.HandleFunc("/tasks.list", api.TasksList)
 	mux.HandleFunc("/tasks.delete", api.TasksDelete)
+	mux.HandleFunc("/tasks.performance.request", api.TasksPerformanceRequest)
 	return mux
 }
 

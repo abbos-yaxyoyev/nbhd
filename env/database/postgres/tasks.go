@@ -77,3 +77,34 @@ func (db Database) ListTasks([4]float64) ([]models.Task, error) {
 	return tasks, nil
 
 }
+
+func (db Database) IsTaskPerformer(task, user string) (bool, error) {
+
+	var toggle int8
+
+	query := "SELECT COUNT(task_id) FROM task_performers WHERE task_id = $1 AND user_id = $2"
+
+	err := db.db.QueryRow(query, task, user).Scan(&toggle)
+
+	if err != nil && err != sql.ErrNoRows {
+		logger.Warning(err.Error())
+		return false, err
+	}
+
+	return toggle == 1, nil
+}
+
+func (db Database) StoreTaskPerformer(performer models.TaskPerformer) error {
+
+	query := "INSERT INTO task_performers (task_id, user_id) VALUES ($1, $2)"
+
+	_, err := db.db.Exec(query, performer.Task, performer.User)
+
+	if err != nil {
+		logger.Warning(err.Error())
+		return err
+	}
+
+	return nil
+
+}

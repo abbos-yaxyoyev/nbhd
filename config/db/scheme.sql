@@ -25,3 +25,10 @@ CREATE TABLE tasks (
   created       TIMESTAMP         NOT NULL,
   archived      BOOLEAN           NOT NULL
 );
+
+
+CREATE TABLE task_performers (
+  task_id UUID NOT NULL,
+  user_id UUID NOT NULL,
+  PRIMARY KEY (task_id, user_id)
+);

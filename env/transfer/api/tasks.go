@@ -92,3 +92,25 @@ func (api API) TasksDelete(w http.ResponseWriter, r *http.Request) {
 	ReturnSuccessResponse(w, res)
 
 }
+
+func (api API) TasksPerformanceRequest(w http.ResponseWriter, r *http.Request) {
+
+	var req request.TasksPerformanceRequest
+
+	err := ProcessRequest(r, &req, api.checkHash, api.hashSalt)
+
+	if err != nil {
+		ReturnErrorResponse(w, err.Error())
+		return
+	}
+
+	res, err := api.controller.TasksPerformanceRequest(req)
+
+	if err != nil {
+		ReturnErrorResponse(w, err.Error())
+		return
+	}
+
+	ReturnSuccessResponse(w, res)
+
+}

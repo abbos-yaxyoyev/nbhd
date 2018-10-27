@@ -14,3 +14,8 @@ type Task struct {
 	Created       string
 	Archived      bool
 }
+
+type TaskPerformer struct {
+	Task string
+	User string
+}

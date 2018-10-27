@@ -24,3 +24,8 @@ type TasksDelete struct {
 	Token string `json:"token" validate:"required,uuid"`
 	Id    string `json:"id" validate:"required,uuid"`
 }
+
+type TasksPerformanceRequest struct {
+	Token string `json:"token" validate:"required,uuid"`
+	Id    string `json:"id" validate:"required,uuid"`
+}

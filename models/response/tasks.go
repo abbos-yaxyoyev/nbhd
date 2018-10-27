@@ -45,3 +45,5 @@ type TasksListCreator struct {
 }
 
 type TasksDelete struct{}
+
+type TasksPerformanceRequest struct{}
