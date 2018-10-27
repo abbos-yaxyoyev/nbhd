@@ -488,3 +488,71 @@ func (controller Controller) TasksPerformerAccept(req request.TasksPerformerAcce
 	return res, nil
 
 }
+
+func (controller Controller) TasksPerformerDecline(req request.TasksPerformerDecline) (response.TasksPerformerDecline, error) {
+
+	var res response.TasksPerformerDecline
+
+	if err := controller.validator.Process(req); err != nil {
+		return res, errors.New("invalid params")
+	}
+
+	session, err := controller.db.GetSession(req.Token)
+
+	if err != nil {
+		return res, errors.New("internal error")
+	}
+
+	if session.Id == "" {
+		return res, errors.New("invalid session id")
+	}
+
+	user, err := controller.db.GetUser(session.User)
+
+	if err != nil {
+		return res, errors.New("internal error")
+	}
+
+	person, err := controller.db.GetUser(req.UserId)
+
+	if err != nil {
+		return res, errors.New("internal error")
+	}
+
+	if person.Id == "" {
+		return res, errors.New("invalid user id")
+	}
+
+	task, err := controller.db.GetTask(req.TaskId)
+
+	if err != nil {
+		return res, errors.New("internal error")
+	}
+
+	if task.Id == "" {
+		return res, errors.New("invalid task id")
+	}
+
+	if task.Creator != user.Id {
+		return res, errors.New("you cannot manage another's tasks")
+	}
+
+	performer, err := controller.db.GetTaskPerformer(task.Id, person.Id)
+
+	if err != nil {
+		return res, errors.New("internal error")
+	}
+
+	if performer.User == "" {
+		return res, errors.New("no request made")
+	}
+
+	err = controller.db.DeleteTaskPerformer(performer)
+
+	if err != nil {
+		return res, errors.New("internal error")
+	}
+
+	return res, nil
+
+}

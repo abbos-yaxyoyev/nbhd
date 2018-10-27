@@ -51,3 +51,5 @@ type TasksPerformanceRequest struct{}
 type TasksPerformanceCancel struct{}
 
 type TasksPerformerAccept struct{}
+
+type TasksPerformerDecline struct{}
