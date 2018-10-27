@@ -106,6 +106,12 @@ func (controller Controller) TasksGet(req request.TasksGet) (response.TasksGet, 
 		return res, errors.New("internal error")
 	}
 
+	taskCreatorRating, err := controller.db.GetUserRating(taskCreator.Id)
+
+	if err != nil {
+		return res, errors.New("internal error")
+	}
+
 	res = response.TasksGet{
 		Id:            task.Id,
 		Title:         task.Title,
@@ -133,9 +139,10 @@ func (controller Controller) TasksGet(req request.TasksGet) (response.TasksGet, 
 	}
 
 	res.Creator = response.TasksGetCreator{
-		Id:    taskCreator.Id,
-		Name:  taskCreator.Name,
-		Photo: taskCreator.Photo,
+		Id:     taskCreator.Id,
+		Name:   taskCreator.Name,
+		Photo:  taskCreator.Photo,
+		Rating: taskCreatorRating,
 	}
 
 	if task.Performer == user.Id {

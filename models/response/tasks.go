@@ -26,10 +26,11 @@ type TasksGetPerformer struct {
 }
 
 type TasksGetCreator struct {
-	Id    string `json:"id"`
-	Name  string `json:"name"`
-	Photo string `json:"photo"`
-	Phone string `json:"phone"`
+	Id     string  `json:"id"`
+	Name   string  `json:"name"`
+	Photo  string  `json:"photo"`
+	Phone  string  `json:"phone"`
+	Rating float64 `json:"rating"`
 }
 
 type TasksList struct {
