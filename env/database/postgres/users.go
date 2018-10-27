@@ -57,3 +57,22 @@ func (db Database) StoreUser(user models.User) error {
 	return nil
 
 }
+
+func (db Database) UpdateUser(user models.User) error {
+
+	if user.Location == nil {
+		user.Location = make([]float64, 0)
+	}
+
+	query := "UPDATE users SET name = $2, photo = $3, phone = $4, location = $5, password = $6 WHERE id = $1"
+
+	_, err := db.db.Exec(query, user.Id, user.Name, user.Photo, user.Phone, pq.Array(&user.Location), user.Password)
+
+	if err != nil {
+		logger.Warning(err.Error())
+		return err
+	}
+
+	return nil
+
+}

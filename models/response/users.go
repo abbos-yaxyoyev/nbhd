@@ -17,3 +17,5 @@ type UsersGet struct {
 	Name  string `json:"name"`
 	Photo string `json:"photo"`
 }
+
+type UsersLocationUpdate struct{}

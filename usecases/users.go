@@ -130,6 +130,42 @@ func (controller Controller) UsersSignOut(req request.UsersSignOut) (response.Us
 
 }
 
+func (controller Controller) UsersLocationUpdate(req request.UsersLocationUpdate) (response.UsersLocationUpdate, error) {
+
+	var res response.UsersLocationUpdate
+
+	if err := controller.validator.Process(req); err != nil {
+		return res, errors.New("invalid params")
+	}
+
+	session, err := controller.db.GetSession(req.Token)
+
+	if err != nil {
+		return res, errors.New("internal error")
+	}
+
+	if session.Id == "" {
+		return res, errors.New("invalid session id")
+	}
+
+	user, err := controller.db.GetUser(session.User)
+
+	if err != nil {
+		return res, errors.New("internal error")
+	}
+
+	user.Location = req.Location
+
+	err = controller.db.UpdateUser(user)
+
+	if err != nil {
+		return res, errors.New("internal error")
+	}
+
+	return res, nil
+
+}
+
 func (controller Controller) UsersGet(req request.UsersGet) (response.UsersGet, error) {
 
 	var res response.UsersGet

@@ -19,3 +19,8 @@ type UsersGet struct {
 	Token string `json:"token" validate:"required,uuid"`
 	Id    string `json:"id" validate:"required,uuid"`
 }
+
+type UsersLocationUpdate struct {
+	Token    string    `json:"token" validate:"required,uuid"`
+	Location []float64 `json:"location" validate:"required,len=2"`
+}
