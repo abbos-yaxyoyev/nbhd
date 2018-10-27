@@ -9,9 +9,9 @@ import (
 
 func (db Database) StoreTask(task models.Task) error {
 
-	query := "INSERT INTO tasks(id, title, category, location, description, time, creator, performer, encouragement, pay, created, archived) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)"
+	query := "INSERT INTO tasks(id, title, category, location, description, time, creator, performer, encouragement, pay, creator_rating, performer_rating, created, archived) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)"
 
-	_, err := db.db.Exec(query, task.Id, task.Title, task.Category, pq.Array(task.Location), task.Description, task.Time, task.Creator, task.Performer, task.Encouragement, task.Pay, task.Created, task.Archived)
+	_, err := db.db.Exec(query, task.Id, task.Title, task.Category, pq.Array(task.Location), task.Description, task.Time, task.Creator, task.Performer, task.Encouragement, task.Pay, task.CreatorRating, task.PerformerRating, task.Created, task.Archived)
 
 	if err != nil {
 		logger.Warning(err.Error())
@@ -24,9 +24,9 @@ func (db Database) StoreTask(task models.Task) error {
 
 func (db Database) UpdateTask(task models.Task) error {
 
-	query := "UPDATE tasks SET title = $2, category = $3, location = $4, description = $5, time = $6, creator = $7, performer = $8, encouragement = $9, pay = $10, created = $11, archived = $12 WHERE id = $1"
+	query := "UPDATE tasks SET title = $2, category = $3, location = $4, description = $5, time = $6, creator = $7, performer = $8, encouragement = $9, pay = $10, creator_rating = $11, performer_rating = $12, created = $13, archived = $14 WHERE id = $1"
 
-	_, err := db.db.Exec(query, task.Id, task.Title, task.Category, pq.Array(task.Location), task.Description, task.Time, task.Creator, task.Performer, task.Encouragement, task.Pay, task.Created, task.Archived)
+	_, err := db.db.Exec(query, task.Id, task.Title, task.Category, pq.Array(task.Location), task.Description, task.Time, task.Creator, task.Performer, task.Encouragement, task.Pay, task.CreatorRating, task.PerformerRating, task.Created, task.Archived)
 
 	if err != nil {
 		logger.Warning(err.Error())
@@ -41,9 +41,9 @@ func (db Database) GetTask(id string) (models.Task, error) {
 
 	var task models.Task
 
-	query := "SELECT id, title, category, location, description, time, creator, performer, encouragement, pay, created, archived FROM tasks WHERE id = $1"
+	query := "SELECT id, title, category, location, description, time, creator, performer, encouragement, pay, creator_rating, performer_rating, created, archived FROM tasks WHERE id = $1"
 
-	err := db.db.QueryRow(query, id).Scan(&task.Id, &task.Title, &task.Category, pq.Array(&task.Location), &task.Description, &task.Time, &task.Creator, &task.Performer, &task.Encouragement, &task.Pay, &task.Created, &task.Archived)
+	err := db.db.QueryRow(query, id).Scan(&task.Id, &task.Title, &task.Category, pq.Array(&task.Location), &task.Description, &task.Time, &task.Creator, &task.Performer, &task.Encouragement, &task.Pay, &task.CreatorRating, &task.PerformerRating, &task.Created, &task.Archived)
 
 	if err != nil && err != sql.ErrNoRows {
 		logger.Warning(err.Error())

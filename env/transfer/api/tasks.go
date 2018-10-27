@@ -180,3 +180,25 @@ func (api API) TasksPerformerDecline(w http.ResponseWriter, r *http.Request) {
 	ReturnSuccessResponse(w, res)
 
 }
+
+func (api API) TasksRate(w http.ResponseWriter, r *http.Request) {
+
+	var req request.TasksRate
+
+	err := ProcessRequest(r, &req, api.checkHash, api.hashSalt)
+
+	if err != nil {
+		ReturnErrorResponse(w, err.Error())
+		return
+	}
+
+	res, err := api.controller.TasksRate(req)
+
+	if err != nil {
+		ReturnErrorResponse(w, err.Error())
+		return
+	}
+
+	ReturnSuccessResponse(w, res)
+
+}

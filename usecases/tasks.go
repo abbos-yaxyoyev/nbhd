@@ -605,3 +605,62 @@ func (controller Controller) TasksPerformerDecline(req request.TasksPerformerDec
 	return res, nil
 
 }
+
+func (controller Controller) TasksRate(req request.TasksRate) (response.TasksRate, error) {
+
+	var res response.TasksRate
+
+	if err := controller.validator.Process(req); err != nil {
+		return res, errors.New("invalid params")
+	}
+
+	session, err := controller.db.GetSession(req.Token)
+
+	if err != nil {
+		return res, errors.New("internal error")
+	}
+
+	if session.Id == "" {
+		return res, errors.New("invalid session id")
+	}
+
+	user, err := controller.db.GetUser(session.User)
+
+	if err != nil {
+		return res, errors.New("internal error")
+	}
+
+	task, err := controller.db.GetTask(req.Id)
+
+	if err != nil {
+		return res, errors.New("internal error")
+	}
+
+	if task.Id == "" {
+		return res, errors.New("invalid task id")
+	}
+
+	switch user.Id {
+	case task.Performer:
+		if task.CreatorRating != 0 {
+			return res, errors.New("task is already rated")
+		}
+		task.CreatorRating = req.Rating
+	case task.Creator:
+		if task.PerformerRating != 0 {
+			return res, errors.New("task is already rated")
+		}
+		task.PerformerRating = req.Rating
+	default:
+		return res, errors.New("you cannot manage another's tasks")
+	}
+
+	err = controller.db.UpdateTask(task)
+
+	if err != nil {
+		return res, errors.New("internal error")
+	}
+
+	return res, nil
+
+}

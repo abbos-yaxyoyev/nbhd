@@ -35,6 +35,7 @@ func NewAPIHandler(config config.HandlerConfig, controller usecases.Controller) 
 	mux.HandleFunc("/tasks.performance.cancel", api.TasksPerformanceCancel)
 	mux.HandleFunc("/tasks.performer.accept", api.TasksPerformerAccept)
 	mux.HandleFunc("/tasks.performer.decline", api.TasksPerformerDecline)
+	mux.HandleFunc("/tasks.rate", api.TasksRate)
 	return mux
 }
 

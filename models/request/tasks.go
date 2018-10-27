@@ -46,3 +46,9 @@ type TasksPerformerDecline struct {
 	TaskId string `json:"task_id" validate:"required,uuid"`
 	UserId string `json:"user_id" validate:"required,uuid"`
 }
+
+type TasksRate struct {
+	Token  string `json:"token" validate:"required,uuid"`
+	Id     string `json:"id" validate:"required,uuid"`
+	Rating int    `json:"rating" validate:"required,min=1,max=5"`
+}
