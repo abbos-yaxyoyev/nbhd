@@ -49,3 +49,5 @@ type TasksDelete struct{}
 type TasksPerformanceRequest struct{}
 
 type TasksPerformanceCancel struct{}
+
+type TasksPerformerAccept struct{}

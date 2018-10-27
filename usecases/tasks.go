@@ -274,7 +274,7 @@ func (controller Controller) TasksDelete(req request.TasksDelete) (response.Task
 	}
 
 	if task.Creator != user.Id {
-		return res, errors.New("invalid action")
+		return res, errors.New("you cannot manage another's tasks")
 	}
 
 	task.Archived = true
@@ -401,6 +401,85 @@ func (controller Controller) TasksPerformanceCancel(req request.TasksPerformance
 	}
 
 	err = controller.db.DeleteTaskPerformer(performer)
+
+	if err != nil {
+		return res, errors.New("internal error")
+	}
+
+	return res, nil
+
+}
+
+func (controller Controller) TasksPerformerAccept(req request.TasksPerformerAccept) (response.TasksPerformerAccept, error) {
+
+	var res response.TasksPerformerAccept
+
+	if err := controller.validator.Process(req); err != nil {
+		return res, errors.New("invalid params")
+	}
+
+	session, err := controller.db.GetSession(req.Token)
+
+	if err != nil {
+		return res, errors.New("internal error")
+	}
+
+	if session.Id == "" {
+		return res, errors.New("invalid session id")
+	}
+
+	user, err := controller.db.GetUser(session.User)
+
+	if err != nil {
+		return res, errors.New("internal error")
+	}
+
+	person, err := controller.db.GetUser(req.UserId)
+
+	if err != nil {
+		return res, errors.New("internal error")
+	}
+
+	if person.Id == "" {
+		return res, errors.New("invalid user id")
+	}
+
+	task, err := controller.db.GetTask(req.TaskId)
+
+	if err != nil {
+		return res, errors.New("internal error")
+	}
+
+	if task.Id == "" {
+		return res, errors.New("invalid task id")
+	}
+
+	if task.Creator != user.Id {
+		return res, errors.New("you cannot manage another's tasks")
+	}
+
+	if task.Performer != uuid.Default {
+		return res, errors.New("performer is already chosen")
+	}
+
+	if task.Archived {
+		return res, errors.New("task is archived")
+	}
+
+	performer, err := controller.db.GetTaskPerformer(task.Id, person.Id)
+
+	if err != nil {
+		return res, errors.New("internal error")
+	}
+
+	if performer.User == "" {
+		return res, errors.New("no request made")
+	}
+
+	task.Performer = person.Id
+	task.Archived = true
+
+	err = controller.db.UpdateTask(task)
 
 	if err != nil {
 		return res, errors.New("internal error")

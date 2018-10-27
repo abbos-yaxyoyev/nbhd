@@ -136,3 +136,25 @@ func (api API) TasksPerformanceCancel(w http.ResponseWriter, r *http.Request) {
 	ReturnSuccessResponse(w, res)
 
 }
+
+func (api API) TasksPerformerAccept(w http.ResponseWriter, r *http.Request) {
+
+	var req request.TasksPerformerAccept
+
+	err := ProcessRequest(r, &req, api.checkHash, api.hashSalt)
+
+	if err != nil {
+		ReturnErrorResponse(w, err.Error())
+		return
+	}
+
+	res, err := api.controller.TasksPerformerAccept(req)
+
+	if err != nil {
+		ReturnErrorResponse(w, err.Error())
+		return
+	}
+
+	ReturnSuccessResponse(w, res)
+
+}

@@ -34,3 +34,9 @@ type TasksPerformanceCancel struct {
 	Token string `json:"token" validate:"required,uuid"`
 	Id    string `json:"id" validate:"required,uuid"`
 }
+
+type TasksPerformerAccept struct {
+	Token  string `json:"token" validate:"required,uuid"`
+	TaskId string `json:"task_id" validate:"required,uuid"`
+	UserId string `json:"user_id" validate:"required,uuid"`
+}
