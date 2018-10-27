@@ -19,6 +19,7 @@ func NewValidator() validator.Validator {
 	v := validatorV9.New()
 	v.RegisterValidation("uuid", isUUID)
 	v.RegisterValidation("phone", IsPhone)
+	v.RegisterValidation("password", IsPassword)
 	return Validator{v}
 }
 
@@ -31,5 +32,11 @@ func isUUID(f validatorV9.FieldLevel) bool {
 func IsPhone(f validatorV9.FieldLevel) bool {
 	v := f.Field().String()
 	p, _ := regexp.Compile("^[0-9]{10}$")
+	return p.MatchString(v)
+}
+
+func IsPassword(f validatorV9.FieldLevel) bool {
+	v := f.Field().String()
+	p, _ := regexp.Compile("^[A-Za-z0-9]{8,16}$")
 	return p.MatchString(v)
 }

@@ -21,3 +21,18 @@ func (db Database) GetSession(id string) (models.Session, error) {
 
 	return session, nil
 }
+
+func (db Database) StoreSession(session models.Session) error {
+
+	query := "INSERT INTO sessions(id, user_id) VALUES ($1, $2)"
+
+	_, err := db.db.Exec(query, session.Id, session.User)
+
+	if err != nil {
+		logger.Warning(err.Error())
+		return err
+	}
+
+	return nil
+
+}

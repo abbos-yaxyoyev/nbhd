@@ -6,4 +6,5 @@ type User struct {
 	Phone    string
 	Photo    string
 	Location []float64
+	Password string
 }

@@ -8,7 +8,8 @@ CREATE TABLE users (
   name     VARCHAR(150) NOT NULL,
   photo    VARCHAR(250) NOT NULL,
   phone    VARCHAR(10)  NOT NULL UNIQUE,
-  location VARCHAR(50)  NOT NULL
+  location VARCHAR(50)  NOT NULL,
+  password VARCHAR(60)  NOT NULL
 );
 
 CREATE TABLE tasks (
