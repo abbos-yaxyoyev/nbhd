@@ -184,12 +184,6 @@ func (controller Controller) UsersGet(req request.UsersGet) (response.UsersGet, 
 		return res, errors.New("invalid session id")
 	}
 
-	user, err := controller.db.GetUser(session.User)
-
-	if err != nil {
-		return res, errors.New("internal error")
-	}
-
 	person, err := controller.db.GetUser(req.Id)
 
 	if err != nil {
@@ -201,9 +195,9 @@ func (controller Controller) UsersGet(req request.UsersGet) (response.UsersGet, 
 	}
 
 	res = response.UsersGet{
-		Id:    user.Id,
-		Name:  user.Name,
-		Photo: user.Photo,
+		Id:    person.Id,
+		Name:  person.Name,
+		Photo: person.Photo,
 	}
 
 	return res, nil
