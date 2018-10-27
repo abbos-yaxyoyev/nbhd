@@ -23,6 +23,7 @@ func NewAPIHandler(config config.HandlerConfig, controller usecases.Controller) 
 	api := API{controller, config.CheckHash, config.HashSalt}
 	mux := http.NewServeMux()
 	mux.HandleFunc("/users.signup", api.UsersSignUp)
+	mux.HandleFunc("/users.signin", api.UsersSignIn)
 	mux.HandleFunc("/users.get", api.UsersGet)
 	mux.HandleFunc("/tasks.create", api.TasksCreate)
 	mux.HandleFunc("/tasks.get", api.TasksGet)

@@ -60,6 +60,48 @@ func (controller Controller) UsersSignUp(req request.UsersSignUp) (response.User
 
 }
 
+func (controller Controller) UsersSignIn(req request.UsersSignIn) (response.UsersSignIn, error) {
+
+	var res response.UsersSignIn
+
+	if err := controller.validator.Process(req); err != nil {
+		return res, errors.New("invalid params")
+	}
+
+	user, err := controller.db.GetUserByPhone(req.Phone)
+
+	if err != nil {
+		return res, errors.New("internal error")
+	}
+
+	if user.Id == "" {
+		return res, errors.New("invalid phone")
+	}
+
+	if !passwords.Validate(req.Password, user.Password) {
+		return res, errors.New("invalid password")
+	}
+
+	session := models.Session{
+		Id:   uuid.Generate(),
+		User: user.Id,
+	}
+
+	err = controller.db.StoreSession(session)
+
+	if err != nil {
+		return res, errors.New("internal error")
+	}
+
+	res = response.UsersSignIn{
+		Token: session.Id,
+		Id:    user.Id,
+	}
+
+	return res, nil
+
+}
+
 func (controller Controller) UsersGet(req request.UsersGet) (response.UsersGet, error) {
 
 	var res response.UsersGet
