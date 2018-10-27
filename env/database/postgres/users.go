@@ -82,24 +82,35 @@ func (db Database) GetUserRating(id string) (float64, error) {
 	var count1 float64
 	var count2 float64
 
-	query := "SELECT SUM(creator_rating)/COUNT(creator_rating) FROM tasks WHERE creator = $1 AND creator_rating != 0"
+	var count float64
+
+	query := "SELECT COALESCE(SUM(creator_rating)/COUNT(creator_rating), 0) FROM tasks WHERE creator = $1 AND creator_rating != 0"
 
 	err := db.db.QueryRow(query, id).Scan(&count1)
 
 	if err != nil {
 		logger.Warning(err.Error())
-		return 0, err
+		return count, err
 	}
 
-	query = "SELECT SUM(performer_rating)/COUNT(performer_rating) FROM tasks WHERE performer = $1 AND performer_rating != 0"
+	query = "SELECT COALESCE(SUM(performer_rating)/COUNT(performer_rating), 0) FROM tasks WHERE performer = $1 AND performer_rating != 0"
 
 	err = db.db.QueryRow(query, id).Scan(&count2)
 
 	if err != nil {
 		logger.Warning(err.Error())
-		return 0, err
+		return count, err
 	}
 
-	return (count1 + count2) / 2, nil
+	switch {
+	case count1 == 0:
+		count = count2
+	case count2 == 0:
+		count = count1
+	default:
+		count = (count1 + count2) / 2
+	}
+
+	return count, nil
 
 }
