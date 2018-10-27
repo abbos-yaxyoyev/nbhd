@@ -1,10 +1,12 @@
 package postgres
 
 import (
+	"database/sql"
+
+	_ "github.com/lib/pq"
+
 	"nbhd/env/config"
 	"nbhd/env/database"
-	"database/sql"
-	_ "github.com/lib/pq"
 )
 
 type Database struct {

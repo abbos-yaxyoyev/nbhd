@@ -1,12 +1,13 @@
 package server
 
 import (
-	"nbhd/env/config"
 	"crypto/tls"
 	"crypto/x509"
 	"errors"
 	"io/ioutil"
 	"net/http"
+
+	"nbhd/env/config"
 )
 
 func RunServer(config config.ServerConfig, mux *http.ServeMux) error {

@@ -7,4 +7,5 @@ type usersStorage interface {
 	GetUserByPhone(string) (models.User, error)
 	StoreUser(models.User) error
 	UpdateUser(models.User) error
+	GetUserRating(string) (float64, error)
 }

@@ -1,6 +1,8 @@
 package main
 
 import (
+	"flag"
+
 	"nbhd/env/config"
 	"nbhd/env/database/postgres"
 	"nbhd/env/server"
@@ -8,7 +10,6 @@ import (
 	"nbhd/env/validator/validator"
 	"nbhd/tools/logger"
 	"nbhd/usecases"
-	"flag"
 )
 
 func main() {
