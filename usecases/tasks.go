@@ -168,10 +168,17 @@ func (controller Controller) TasksGet(req request.TasksGet) (response.TasksGet, 
 				return res, errors.New("internal error")
 			}
 
+			personRating, err := controller.db.GetUserRating(person.Id)
+
+			if err != nil {
+				return res, errors.New("internal error")
+			}
+
 			resPerformer := response.TasksGetPerformer{
-				Id:    person.Id,
-				Name:  person.Name,
-				Photo: person.Photo,
+				Id:     person.Id,
+				Name:   person.Name,
+				Photo:  person.Photo,
+				Rating: personRating,
 			}
 
 			resPerformers = append(resPerformers, resPerformer)
